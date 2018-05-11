@@ -26,7 +26,6 @@ Program refactored_postprocessor
   if (root%unprocessed%dim(1) == 2) then 
     write(*,*) '** Processing data'
     function_value_int = do_process_data(root)
-    
     write(*,*) '** writing to file'
     function_value_int = set_vtk_format(root)
   else
