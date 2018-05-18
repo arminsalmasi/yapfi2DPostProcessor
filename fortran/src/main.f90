@@ -19,8 +19,8 @@ Program refactored_postprocessor
   read(*,*) root%input_path
   write(*,*) 'outout directory path:'
   read(*,*) root%output_path
-  root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\'         !temporary
-  root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\vtk\'    !temporary
+  !root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\'         !temporary
+  !root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\vtk\'    !temporary
   write(*,*) '** Reading data from files'
   function_value_int = get_unprocessed_data(root)
   if (root%unprocessed%dim(1) == 2) then 
