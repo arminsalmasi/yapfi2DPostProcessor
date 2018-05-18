@@ -15,12 +15,12 @@ Program refactored_postprocessor
   !allocate(root%processed%cells%regions)
   !allocate(root%processed%cells%regions%timesteps)
   
-  write(*,*) 'inpout directory path:'
-  read(*,*) root%input_path
-  write(*,*) 'outout directory path:'
-  read(*,*) root%output_path
-  !root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\'         !temporary
-  !root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfipostprocessor\testdata_working\vtk\'    !temporary
+  !write(*,*) 'inpout directory path:'
+  !read(*,*) root%input_path
+  !write(*,*) 'outout directory path:'
+  !read(*,*) root%output_path
+  root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\'         !temporary
+  root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\vtk\'    !temporary
   write(*,*) '** Reading data from files'
   function_value_int = get_unprocessed_data(root)
   if (root%unprocessed%dim(1) == 2) then 
