@@ -27,6 +27,7 @@
 		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath=".\datastruct_global.f90"/>
 		<File RelativePath=".\src\do_process_data.f90"/>
 		<File RelativePath=".\src\get_input_data.f90"/>
 		<File RelativePath=".\src\main.f90"/>

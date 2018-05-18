@@ -7,32 +7,31 @@ Program refactored_postprocessor
         
   implicit none
   
-  allocate(root)
-  allocate(root%unprocessed)
-  allocate(root%processed)
-  !allocate(root%processed%current_region)
-  !allocate(root%processed%cells)
-  !allocate(root%processed%cells%regions)
-  !allocate(root%processed%cells%regions%timesteps)
+
+  allocate(unprocessed)
+  allocate(processed)
+
+
   
   !write(*,*) 'inpout directory path:'
   !read(*,*) root%input_path
   !write(*,*) 'outout directory path:'
   !read(*,*) root%output_path
-  root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\'         !temporary
-  root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\vtk\'    !temporary
+  input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\'         !temporary
+  output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\vtk\'    !temporary
   write(*,*) '** Reading data from files'
-  function_value_int = get_unprocessed_data(root)
-  if (root%unprocessed%dim(1) == 2) then 
+  function_value_int = get_unprocessed_data(unprocessed,input_path)
+  if (unprocessed%dim(1) == 2) then 
     write(*,*) '** Processing data'
-    function_value_int = do_process_data(root)
+    function_value_int = do_process_data(unprocessed,processed)
     write(*,*) '** writing to file'
-    function_value_int = set_vtk_format(root)
+    function_value_int = set_vtk_format(processed,output_path)
   else
     write(*,*) '** Error: this code only process 2D YAPFI simulations'
   end if
   write(*,*) 'end process, press return!'
   read(*,*)
-  deallocate(root)
+  deallocate(unprocessed)
+  deallocate(processed)
 
 endprogram refactored_postprocessor
