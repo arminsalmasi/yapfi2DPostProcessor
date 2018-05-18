@@ -26,7 +26,7 @@ module postprocessor_datastructure
             character(len=SHORTWORD), dimension(:), allocatable :: phsnames 
         endtype UNPROCESSEDDATA   
     !-------------------------------------------------------------------------------------------------------------------------------------       
-        type NODE   !avariableoftypeNODE:allofthepossibleresultsataspecificnodeataspecifictimesteparesaved
+        type nodes   !avariableoftypeNODE:allofthepossibleresultsataspecificnodeataspecifictimesteparesaved
             integer :: vertex_index
             doubleprecision :: vm
             integer, dimension(3) :: xyz_indexes !ngpx_ngpy_ngpz
@@ -34,16 +34,15 @@ module postprocessor_datastructure
             doubleprecision, dimension(:), allocatable :: phase_fractions(:)
             doubleprecision, dimension(:), allocatable :: mole_fractions(:)
             doubleprecision, dimension(:), allocatable :: chemical_potentials(:)
-        endtype NODE
+        endtype nodes
     !-------------------------------------------------------------------------------------------------------------------------------------    
         type TIMESTEP   !
             doubleprecision :: timestep_value
             integer :: timestep_index
-            type(NODE), pointer, dimension(:,:,:) :: nodes
+            type(nodes), pointer, dimension(:,:,:) :: node
         endtype TIMESTEP
     !-------------------------------------------------------------------------------------------------------------------------------------    
-        type REGION !
-                !integer :: region_index
+        type PROCESSEDDATA !
                 integer :: number_of_dimensions
                 doubleprecision, dimension(3) :: domain_size
                 integer, dimension(3) :: number_of_gridpoints
@@ -53,10 +52,6 @@ module postprocessor_datastructure
                 character(len=SHORTWORD), dimension(:), allocatable :: names_of_phases
                 character(len=SHORTWORD), dimension(:), allocatable :: names_of_elements
                 type(TIMESTEP), pointer, dimension(:) :: timesteps
-        endtype REGION
-    !-------------------------------------------------------------------------------------------------------------------------------------    
-        type PROCESSEDDATA  !a variable of type PROCESSEDDATA:Fieldrootcontainsthewholesystemofresultsconsistingofroot>cells>regions>timesteps>nodes    !Field PROCESSEDDATA_infooftypeROOTINFO
-            type(REGION), pointer :: current_region
         endtype PROCESSEDDATA
     !-------------------------------------------------------------------------------------------------------------------------------------    
         type POSTPROCESSORROOT

@@ -10,7 +10,7 @@ Program refactored_postprocessor
   allocate(root)
   allocate(root%unprocessed)
   allocate(root%processed)
-  allocate(root%processed%current_region)
+  !allocate(root%processed%current_region)
   !allocate(root%processed%cells)
   !allocate(root%processed%cells%regions)
   !allocate(root%processed%cells%regions%timesteps)
