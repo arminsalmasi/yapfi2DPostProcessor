@@ -13,7 +13,6 @@ module get_input
     !reading_integer_type_files_alphabetical_order
     f_name =''
     f_name = trim(root_tmp%input_path)//"DIMENSIONALITY.TXT"
-    !allocate(root_tmp%unprocessed%dim(file_size(f_name)))
     root_tmp%unprocessed%dim = get_file_int(f_name,file_size(f_name))
               
     f_name =''
@@ -24,7 +23,6 @@ module get_input
                                   
     f_name =''
     f_name = trim(root_tmp%input_path)//"NUMBER_OF_GRID_POINTS.TXT"
-    !allocate(root_tmp%unprocessed%ngrd(file_size(f_name)))
     root_tmp%unprocessed%ngrd = get_file_int(f_name,file_size(f_name))
               
     f_name =''
@@ -41,7 +39,6 @@ module get_input
   
     f_name =''
     f_name = trim(root_tmp%input_path)//"DOMAIN_SIZE.TXT"
-    !allocate(root_tmp%unprocessed%dsz(file_size(f_name)))
     root_tmp%unprocessed%dsz = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
@@ -63,8 +60,7 @@ module get_input
     f_name = trim(root_tmp%input_path)//"TIME.TXT"
     allocate(root_tmp%unprocessed%tm(file_size(f_name)))
     root_tmp%unprocessed%tm = get_file_dp(f_name,file_size(f_name))
-    !volume_fraction/.....
-          
+              
     !reading_string_type_files_alphabetical_order
     f_name =''
     f_name = trim(root_tmp%input_path)//"ELEMENT_NAMES.TXT"
