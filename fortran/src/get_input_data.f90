@@ -1,75 +1,75 @@
 module get_input
-  use postprocessor_datastructure
+  use PpDatastruct
   contains
 !----------------------------------------------------------------------------------------------------------------------------    
-  function get_unprocessed_data(unprocessed_tmp,input_path)
+  function get_unprocessed_data(UnPrcTmp,input_path)
           
     implicit none
     integer :: get_unprocessed_data
-    type(UNPROCESSEDDATA), pointer :: unprocessed_tmp
+    type(UnPrcDataType) :: UnPrcTmp
     character(len=LONGWORD) :: f_name, input_path
       
     !reading_integer_type_files_alphabetical_order
     f_name =''
     f_name = trim(input_path)//"DIMENSIONALITY.TXT"
-    unprocessed_tmp%dim = get_file_int(f_name,file_size(f_name))
+    UnPrcTmp%dim = get_file_int(f_name,file_size(f_name))
               
     f_name =''
     f_name = trim(input_path)//"NUMBER_OF_ELEMENTS.TXT"
-    allocate(unprocessed_tmp%nel(file_size(f_name)))
+    allocate(UnPrcTmp%nel(file_size(f_name)))
           
-    unprocessed_tmp%nel = get_file_int(f_name,file_size(f_name))
+    UnPrcTmp%nel = get_file_int(f_name,file_size(f_name))
                                   
     f_name =''
     f_name = trim(input_path)//"NUMBER_OF_GRID_POINTS.TXT"
-    unprocessed_tmp%ngrd = get_file_int(f_name,file_size(f_name))
+    UnPrcTmp%ngrd = get_file_int(f_name,file_size(f_name))
               
     f_name =''
     f_name = trim(input_path)//"NUMBER_OF_PHASES.TXT"
-    allocate(unprocessed_tmp%nphs(file_size(f_name)))
-    unprocessed_tmp%nphs = get_file_int(f_name,file_size(f_name))
+    allocate(UnPrcTmp%nphs(file_size(f_name)))
+    UnPrcTmp%nphs = get_file_int(f_name,file_size(f_name))
               
     !/number_of_regions/number_of_cells
     !reading_double_type_files_alphabetical_order
     f_name =''
     f_name = trim(input_path)//"CHEMICAL_POTENTIALS.TXT"
-    allocate(unprocessed_tmp%chpot(file_size(f_name)))
-    unprocessed_tmp%chpot = get_file_dp(f_name,file_size(f_name))
+    allocate(UnPrcTmp%chpot(file_size(f_name)))
+    UnPrcTmp%chpot = get_file_dp(f_name,file_size(f_name))
   
     f_name =''
     f_name = trim(input_path)//"DOMAIN_SIZE.TXT"
-    unprocessed_tmp%dsz = get_file_dp(f_name,file_size(f_name))
+    UnPrcTmp%dsz = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
     f_name = trim(input_path)//"FINITE_VOLUME_CENTROID_COORDINATES.TXT"
-    allocate(unprocessed_tmp%fvcc(file_size(f_name)))
-    unprocessed_tmp%fvcc = get_file_dp(f_name,file_size(f_name))
+    allocate(UnPrcTmp%fvcc(file_size(f_name)))
+    UnPrcTmp%fvcc = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
     f_name = trim(input_path)//"MOLE_FRACTIONS.TXT" 
-    allocate(unprocessed_tmp%molfrc(file_size(f_name)))
-    unprocessed_tmp%molfrc = get_file_dp(f_name,file_size(f_name))
+    allocate(UnPrcTmp%molfrc(file_size(f_name)))
+    UnPrcTmp%molfrc = get_file_dp(f_name,file_size(f_name))
   
     f_name =''
     f_name = trim(input_path)//"PHASE_FRACTIONS.TXT"
-    allocate(unprocessed_tmp%phsfrc(file_size(f_name)))
-    unprocessed_tmp%phsfrc = get_file_dp(f_name,file_size(f_name))
+    allocate(UnPrcTmp%phsfrc(file_size(f_name)))
+    UnPrcTmp%phsfrc = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
     f_name = trim(input_path)//"TIME.TXT"
-    allocate(unprocessed_tmp%tm(file_size(f_name)))
-    unprocessed_tmp%tm = get_file_dp(f_name,file_size(f_name))
+    allocate(UnPrcTmp%tm(file_size(f_name)))
+    UnPrcTmp%tm = get_file_dp(f_name,file_size(f_name))
               
     !reading_string_type_files_alphabetical_order
     f_name =''
     f_name = trim(input_path)//"ELEMENT_NAMES.TXT"
-    allocate(unprocessed_tmp%elnames(file_size(f_name)))
-    unprocessed_tmp%elnames = get_file_str(f_name,file_size(f_name)) 
+    allocate(UnPrcTmp%elnames(file_size(f_name)))
+    UnPrcTmp%elnames = get_file_str(f_name,file_size(f_name)) 
               
     f_name =''
     f_name = trim(input_path)//"PHASE_NAMES.TXT"
-    allocate(unprocessed_tmp%phsnames(file_size(f_name)))
-    unprocessed_tmp%phsnames = get_file_str(f_name,file_size(f_name)) 
+    allocate(UnPrcTmp%phsnames(file_size(f_name)))
+    UnPrcTmp%phsnames = get_file_str(f_name,file_size(f_name)) 
        
     get_unprocessed_data = 0
   endfunction get_unprocessed_data
