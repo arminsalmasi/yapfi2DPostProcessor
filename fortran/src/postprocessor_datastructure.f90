@@ -59,7 +59,8 @@ module postprocessor_datastructure
             type(NODE), pointer, dimension(:,:,:) :: nodes
         endtype TIMESTEP
     !-------------------------------------------------------------------------------------------------------------------------------------    
-        type REGION !
+        type PROCESSEDDATA
+        !type REGION !
                 !integer :: region_index
                 integer :: number_of_dimensions
                 doubleprecision, dimension(3) :: domain_size
@@ -73,7 +74,8 @@ module postprocessor_datastructure
                 !Boundryconditions>whatsoeverboundryconditionsappplytothisspecificregion
                 !Meshinfooranyotherinformationregardstogridandcellsandsoon>Type,size,shape...
                 type(TIMESTEP), pointer, dimension(:) :: timesteps
-        endtype REGION
+        !endtype REGION
+        end type PROCESSEDDATA
     !-------------------------------------------------------------------------------------------------------------------------------------    
         !type CELL   !
         !    integer :: cell_index
@@ -82,12 +84,12 @@ module postprocessor_datastructure
         !    type(REGION), pointer, dimension(:) :: regions
         !endtype CELL
     !-------------------------------------------------------------------------------------------------------------------------------------    
-        type PROCESSEDDATA  !a variable of type PROCESSEDDATA:Fieldrootcontainsthewholesystemofresultsconsistingofroot>cells>regions>timesteps>nodes    !Field PROCESSEDDATA_infooftypeROOTINFO
-        !        integer :: number_of_cells
-        !        character(len=SHORTWORD), dimension(:), allocatable :: names_of_cells(:)
-        !        type(CELL), pointer, dimension(:) :: cells
-            type(REGION), pointer :: current_region
-        endtype PROCESSEDDATA
+        !type PROCESSEDDATA  !a variable of type PROCESSEDDATA:Fieldrootcontainsthewholesystemofresultsconsistingofroot>cells>regions>timesteps>nodes    !Field PROCESSEDDATA_infooftypeROOTINFO
+        !!        integer :: number_of_cells
+        !!        character(len=SHORTWORD), dimension(:), allocatable :: names_of_cells(:)
+        !!        type(CELL), pointer, dimension(:) :: cells
+        !    type(REGION), pointer :: current_region
+        !endtype PROCESSEDDATA
     !-------------------------------------------------------------------------------------------------------------------------------------    
         type POSTPROCESSORROOT
             type(PROCESSEDDATA), pointer :: processed

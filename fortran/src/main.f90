@@ -10,7 +10,7 @@ Program refactored_postprocessor
   allocate(root)
   allocate(root%unprocessed)
   allocate(root%processed)
-  allocate(root%processed%current_region)
+  !allocate(root%processed%current_region)
   !allocate(root%processed%cells)
   !allocate(root%processed%cells%regions)
   !allocate(root%processed%cells%regions%timesteps)
@@ -19,6 +19,8 @@ Program refactored_postprocessor
   !read(*,*) root%input_path
   !write(*,*) 'outout directory path:'
   !read(*,*) root%output_path
+  
+  
   root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\'         !temporary
   root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\vtk\'    !temporary
   write(*,*) '** Reading data from files'
