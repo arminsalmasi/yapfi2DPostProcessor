@@ -32,7 +32,7 @@
   CASE (1)
     function_value_int = do_process_data_1D(root)
     write(*,*) '** writing to file'
-    !function_value_int = set_vtk_format(root)
+    function_value_int = set_vtk_format(root)
   CASE (2)
     function_value_int = do_process_data_2D(root)
     write(*,*) '** writing to file'
