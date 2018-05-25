@@ -1,27 +1,15 @@
-﻿module set_vtk
+﻿  module set_vtk
   use postprocessor_datastructure
   contains
-!-------------------------------------------------------------------------------------------------------------------------------------
-  function set_vtk_format(root_tmp) 
-    implicit none
-    integer :: set_vtk_format,filetype
-    type(POSTPROCESSORROOT), pointer :: root_tmp  
-  
-    write(*,*) 'write all information in 1 vtk file?\1=Yes\2=Seperatefiles\:'
-    read(*,*) filetype
-    
-      function_value_int = set_AllInOne_vtk_2D(root_tmp)
-    
-    set_vtk_format = 0 
-  endfunction set_vtk_format
-    !-------------------------------------------------------------------------------------------------------------------------------------
-  function set_AllInOne_vtk_2D(root_tmp)
+  !-------------------------------------------------------------------------------------------------------------------------------------
+  function set_AllInOne_vtk(root_tmp)
   implicit none
-  integer :: set_AllInOne_vtk_2D
+  integer :: set_AllInOne_vtk
   type(POSTPROCESSORROOT), pointer :: root_tmp
-  integer :: e , p ,t , nx , ny , nz , number_of_points , number_of_cells, cell_list_size 
-  character(len=LONGWORD) :: f_name , f_extension, f_nameheader , element_name, timestep_number , element_number, f_path, tempst,phase_number,phase_name
-  
+  integer :: e , p ,t , nx , ny , nz , number_of_points , number_of_cells, cell_list_size, CNTX,CNTY,CNTZ
+  character(len=LONGWORD) :: f_name , f_extension, f_nameheader , element_name, timestep_number
+  character(len=LONGWORD) :: element_number, f_path, tempst,phase_number,phase_name
+
   do t = 1 , root_tmp%processed%number_of_timesteps
     !filename
     f_name = ''
@@ -50,7 +38,23 @@
       enddo
     enddo
     !number of cells
-    number_of_cells = (root_tmp%processed%number_of_gridpoints(1)-1)*(root_tmp%processed%number_of_gridpoints(2)-1)
+    CNTX = root_tmp%processed%number_of_gridpoints(1)-1
+    CNTY = root_tmp%processed%number_of_gridpoints(2)-1
+    CNTZ = root_tmp%processed%number_of_gridpoints(3)-1
+    SELECT CASE (root_tmp%processed%number_of_dimensions)
+    CASE (1)
+      number_of_cells = (root_tmp%processed%number_of_gridpoints(1)-1)
+      CNTY = 1
+      CNTZ = 1
+    CASE (2)
+      number_of_cells = (root_tmp%processed%number_of_gridpoints(1)-1)*(root_tmp%processed%number_of_gridpoints(2)-1)
+      CNTZ = 1
+    CASE (3)
+      number_of_cells = (root_tmp%processed%number_of_gridpoints(1)-1)*(root_tmp%processed%number_of_gridpoints(2)-1)*(root_tmp%processed%number_of_gridpoints(3)-1) !*#
+      !PROCEED
+    END SELECT
+
+
     cell_list_size = number_of_cells * ((2**root_tmp%processed%number_of_dimensions)+1)
     tempst=''
     write(tempst,*) number_of_cells
@@ -59,33 +63,94 @@
     write(tempst,*) cell_list_size
     write(1,'(a)') trim(adjustl(tempst))
     !vertex index
-    do nx = 1 , root_tmp%processed%number_of_gridpoints(1)-1
-      do ny = 1 , root_tmp%processed%number_of_gridpoints(2)-1
-        nz = 1
-        tempst =''
-        write(tempst,*) 2**root_tmp%processed%number_of_dimensions
-        write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
-        tempst =''
-        write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%vertex_index
-        write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
-        tempst =''
-        write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny+1,nz)%vertex_index
-        write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
-        tempst =''
-        write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny,nz)%vertex_index
-        write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
-        tempst =''
-        write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny+1,nz)%vertex_index
-        write(1,'(a)') trim(adjustl(tempst))
-      enddo
+    do nx = 1 , CNTX
+      do ny = 1 ,CNTY
+        do nZ = 1 ,CNTZ
+          SELECT CASE (root_tmp%processed%number_of_dimensions)
+
+          CASE(1)
+            tempst =''
+            write(tempst,*) 2**root_tmp%processed%number_of_dimensions
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny,nz)%vertex_index
+            write(1,'(a)') trim(adjustl(tempst))//' '
+
+          CASE(2)
+            tempst =''
+            write(tempst,*) 2**root_tmp%processed%number_of_dimensions
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny+1,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny+1,nz)%vertex_index
+            write(1,'(a)') trim(adjustl(tempst))
+
+          CASE(3)
+            tempst =''
+            write(tempst,*) 2**root_tmp%processed%number_of_dimensions
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny,nz+1)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny+1,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx,ny+1,nz+1)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny,nz+1)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny+1,nz)%vertex_index
+            write(1,'(a)',advance="no") trim(adjustl(tempst))//' '
+            tempst =''
+            write(tempst,*) root_tmp%processed%timesteps(t)%nodes(nx+1,ny+1,nz+1)%vertex_index
+            write(1,'(a)') trim(adjustl(tempst))
+
+
+
+          END SELECT
+        enddo
+      END DO
     enddo
     !celltype
     tempst =''
     write(tempst,*) number_of_cells
     write(1,'(a)') 'CELL_TYPES'//' '//trim(adjustl(tempst))
-    do nx= 1 , number_of_cells
-      write(1,'(a)',advance="no") '8 '
-    enddo
+    SELECT CASE (root_tmp%processed%number_of_dimensions)
+    CASE (1)
+      do nx= 1 , number_of_cells
+        write(1,'(a)',advance="no") '4 '
+      ENDDO
+    CASE(2)
+      DO nx= 1 , number_of_cells
+        WRITE(1,'(a)',advance="no") '8 '
+      ENDDO
+    CASE(3)
+      DO nx= 1 , number_of_cells
+        WRITE(1,'(a)',advance="no") '11 '
+      ENDDO
+    END SELECT
     !number of points
     write(1,*)
     tempst =''
@@ -98,11 +163,26 @@
       element_name = root_tmp%processed%names_of_elements(e)
       write(1,'(a)') 'SCALARS X('//trim(adjustl(element_name))//')'//' '//'double 1'
       write(1,'(a)') 'LOOKUP_TABLE default'
+
+      CNTX = root_tmp%processed%number_of_gridpoints(1)
+      CNTY = root_tmp%processed%number_of_gridpoints(2)
+      CNTZ = root_tmp%processed%number_of_gridpoints(3)
+      SELECT CASE (root_tmp%processed%number_of_dimensions)
+      CASE (1)
+        CNTY = 1
+        CNTZ = 1
+      CASE (2)
+        CNTZ = 1
+      CASE (3)
+        ! PROCEED
+      END SELECT
+
       !sclers mole fractions
       do nx = 1 , root_tmp%processed%number_of_gridpoints(1)
         do ny = 1 , root_tmp%processed%number_of_gridpoints(2)
-          nz = 1
-          write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%mole_fractions(e)
+          do nZ = 1 , root_tmp%processed%number_of_gridpoints(3)
+            write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%mole_fractions(e)
+          ENDDO
         enddo
       enddo
       write(1,'(a)')
@@ -112,9 +192,10 @@
       ! scalers chemical potentials
       do nx = 1 , root_tmp%processed%number_of_gridpoints(1)
         do ny = 1 , root_tmp%processed%number_of_gridpoints(2)
-          nz = 1
-          write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%chemical_potentials(e)
-        enddo
+          do nZ = 1 , root_tmp%processed%number_of_gridpoints(3)
+            write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%chemical_potentials(e)
+          enddo
+        ENDDO
       enddo
       write(1,'(a)')
     enddo
@@ -128,18 +209,19 @@
       !scalers phase fractions
       do nx = 1 , root_tmp%processed%number_of_gridpoints(1)
         do ny = 1 , root_tmp%processed%number_of_gridpoints(2)
-          nz = 1
-          write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%phase_fractions(p)
-        enddo
+          do nZ = 1 , root_tmp%processed%number_of_gridpoints(3)
+            write(1,'(ES28.16)',advance="no") root_tmp%processed%timesteps(t)%nodes(nx,ny,nz)%phase_fractions(p)
+          enddo
+        ENDDO
       enddo
       write(1,'(a)')
     enddo
     ! close file
     close(1)
   enddo ! next timestep
-  set_AllInOne_vtk_2D = 0
-  endfunction set_AllInOne_vtk_2D
+  set_AllInOne_vtk = 0
+  endfunction set_AllInOne_vtk
+
   !-------------------------------------------------------------------------------------------------------------------------------------
 
-!------------------------------------------------------------------------------------------------------------------------------------------------------
-end module set_vtk
+  end module set_vtk
