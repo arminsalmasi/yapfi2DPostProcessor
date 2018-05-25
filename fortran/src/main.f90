@@ -1,5 +1,6 @@
   Program refactored_postprocessor
 
+<<<<<<< HEAD
   use PpDatastruct
   use get_input
   use do_process
@@ -13,11 +14,24 @@
 
 
 
+=======
+  use postprocessor_datastructure
+  use get_input
+  use do_process
+  use set_vtk
+
+  implicit none
+
+  allocate(root)
+  allocate(root%unprocessed)
+  allocate(root%processed)
+>>>>>>> temp
 
   !write(*,*) 'inpout directory path:'
   !read(*,*) root%input_path
   !write(*,*) 'outout directory path:'
   !read(*,*) root%output_path
+<<<<<<< HEAD
   input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\'         !temporary
   output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test2D\vtk\'    !temporary
   write(*,*) '** Reading data from files'
@@ -70,9 +84,28 @@
     WRITE(*,*) '** 3D Process finished'
   END SELECT
 
+=======
+
+  root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test3D\'         !temporary
+  root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test3D\vtk\'    !temporary
+  write(*,*) '** Reading data from files'
+
+  function_value_int = get_unprocessed_data(root)
+
+  write(*,*) '** Processing data'
+  function_value_int = do_process_data(root)
+
+  
+  write(*,*) '** writing to file'
+  function_value_int = set_AllInOne_vtk(root)
+  
+>>>>>>> temp
   write(*,*) 'end process, press return!'
 
   read(*,*)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> temp
   endprogram refactored_postprocessor
