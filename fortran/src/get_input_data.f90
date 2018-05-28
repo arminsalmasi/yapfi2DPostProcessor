@@ -1,75 +1,81 @@
 module get_input
-  use PpDatastruct
+  use postprocessor_datastructure
   contains
 !----------------------------------------------------------------------------------------------------------------------------    
-  function get_unprocessed_data(UnPrcTmp,input_path)
+  function get_unprocessed_data(root_tmp)
           
     implicit none
     integer :: get_unprocessed_data
-    type(UnPrcDataType) :: UnPrcTmp
-    character(len=LONGWORD) :: f_name, input_path
+    !integer :: f_size
+    type(POSTPROCESSORROOT), pointer :: root_tmp
+    character(len=LONGWORD) :: f_name
       
     !reading_integer_type_files_alphabetical_order
     f_name =''
-    f_name = trim(input_path)//"DIMENSIONALITY.TXT"
-    UnPrcTmp%dim = get_file_int(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"DIMENSIONALITY.TXT"
+    !allocate(root_tmp%unprocessed%dim(file_size(f_name)))
+    root_tmp%unprocessed%dim = get_file_int(f_name,file_size(f_name))
               
     f_name =''
-    f_name = trim(input_path)//"NUMBER_OF_ELEMENTS.TXT"
-    allocate(UnPrcTmp%nel(file_size(f_name)))
+    f_name = trim(root_tmp%input_path)//"NUMBER_OF_ELEMENTS.TXT"
+    allocate(root_tmp%unprocessed%nel(file_size(f_name)))
           
-    UnPrcTmp%nel = get_file_int(f_name,file_size(f_name))
+    root_tmp%unprocessed%nel = get_file_int(f_name,file_size(f_name))
                                   
     f_name =''
-    f_name = trim(input_path)//"NUMBER_OF_GRID_POINTS.TXT"
-    UnPrcTmp%ngrd = get_file_int(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"NUMBER_OF_GRID_POINTS.TXT"
+    !allocate(root_tmp%unprocessed%ngrd(file_size(f_name)))
+    root_tmp%unprocessed%ngrd = get_file_int(f_name,file_size(f_name))
               
     f_name =''
-    f_name = trim(input_path)//"NUMBER_OF_PHASES.TXT"
-    allocate(UnPrcTmp%nphs(file_size(f_name)))
-    UnPrcTmp%nphs = get_file_int(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"NUMBER_OF_PHASES.TXT"
+    allocate(root_tmp%unprocessed%nphs(file_size(f_name)))
+    root_tmp%unprocessed%nphs = get_file_int(f_name,file_size(f_name))
               
     !/number_of_regions/number_of_cells
     !reading_double_type_files_alphabetical_order
     f_name =''
-    f_name = trim(input_path)//"CHEMICAL_POTENTIALS.TXT"
-    allocate(UnPrcTmp%chpot(file_size(f_name)))
-    UnPrcTmp%chpot = get_file_dp(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"CHEMICAL_POTENTIALS.TXT"
+    allocate(root_tmp%unprocessed%chpot(file_size(f_name)))
+    root_tmp%unprocessed%chpot = get_file_dp(f_name,file_size(f_name))
   
     f_name =''
-    f_name = trim(input_path)//"DOMAIN_SIZE.TXT"
-    UnPrcTmp%dsz = get_file_dp(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"DOMAIN_SIZE.TXT"
+    !allocate(root_tmp%unprocessed%dsz(file_size(f_name)))
+    root_tmp%unprocessed%dsz = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
-    f_name = trim(input_path)//"FINITE_VOLUME_CENTROID_COORDINATES.TXT"
-    allocate(UnPrcTmp%fvcc(file_size(f_name)))
-    UnPrcTmp%fvcc = get_file_dp(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"FINITE_VOLUME_CENTROID_COORDINATES.TXT"
+    allocate(root_tmp%unprocessed%fvcc(file_size(f_name)))
+    root_tmp%unprocessed%fvcc = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
-    f_name = trim(input_path)//"MOLE_FRACTIONS.TXT" 
-    allocate(UnPrcTmp%molfrc(file_size(f_name)))
-    UnPrcTmp%molfrc = get_file_dp(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"MOLE_FRACTIONS.TXT" 
+    allocate(root_tmp%unprocessed%molfrc(file_size(f_name)))
+    root_tmp%unprocessed%molfrc = get_file_dp(f_name,file_size(f_name))
   
     f_name =''
-    f_name = trim(input_path)//"PHASE_FRACTIONS.TXT"
-    allocate(UnPrcTmp%phsfrc(file_size(f_name)))
-    UnPrcTmp%phsfrc = get_file_dp(f_name,file_size(f_name))
+    f_name = trim(root_tmp%input_path)//"PHASE_FRACTIONS.TXT"
+    allocate(root_tmp%unprocessed%phsfrc(file_size(f_name)))
+    root_tmp%unprocessed%phsfrc = get_file_dp(f_name,file_size(f_name))
               
     f_name =''
-    f_name = trim(input_path)//"TIME.TXT"
-    allocate(UnPrcTmp%tm(file_size(f_name)))
-    UnPrcTmp%tm = get_file_dp(f_name,file_size(f_name))
-              
+    f_name = trim(root_tmp%input_path)//"TIME.TXT"
+    allocate(root_tmp%unprocessed%tm(file_size(f_name)))
+    root_tmp%unprocessed%tm = get_file_dp(f_name,file_size(f_name))
+    !volume_fraction/.....
+          
     !reading_string_type_files_alphabetical_order
     f_name =''
-    f_name = trim(input_path)//"ELEMENT_NAMES.TXT"
-    allocate(UnPrcTmp%elnames(file_size(f_name)))
-    UnPrcTmp%elnames = get_file_str(f_name,file_size(f_name)) 
+    f_name = trim(root_tmp%input_path)//"ELEMENT_NAMES.TXT"
+    allocate(root_tmp%unprocessed%elnames(file_size(f_name)))
+    root_tmp%unprocessed%elnames = get_file_str(f_name,file_size(f_name)) 
               
     f_name =''
-    f_name = trim(input_path)//"PHASE_NAMES.TXT"
-    allocate(UnPrcTmp%phsnames(file_size(f_name)))
-    UnPrcTmp%phsnames = get_file_str(f_name,file_size(f_name)) 
+    f_name = trim(root_tmp%input_path)//"PHASE_NAMES.TXT"
+    allocate(root_tmp%unprocessed%phsnames(file_size(f_name)))
+    root_tmp%unprocessed%phsnames = get_file_str(f_name,file_size(f_name)) 
+    !regions_names/cells_names/....
        
     get_unprocessed_data = 0
   endfunction get_unprocessed_data
