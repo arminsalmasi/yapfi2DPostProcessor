@@ -9,18 +9,18 @@
   LOGICAL :: lErrorFlag
   !-------------------------------------------------------------------------------------------------------------------------------------
   TYPE tyUnprocessedData
-    DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rFiniteVolumeCenterCoordinates
+    INTEGER, DIMENSION(1) :: iNOfDimensions
+	INTEGER, DIMENSION(3) :: iNOfGridPoints
+    INTEGER, DIMENSION(:), ALLOCATABLE :: iNOfPhses
+	INTEGER, DIMENSION(:), ALLOCATABLE :: iNOfElements
+    DOUBLEPRECISION, DIMENSION(3) :: rDomainSize
+	DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rTime
     DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rMoleFractions
     DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rPhaseFractions
     DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rChemicalPotentials
-    DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rTime
-    DOUBLEPRECISION, DIMENSION(3) :: rDomainSize
-    INTEGER, DIMENSION(1) :: iNOfDimensions
-    INTEGER, DIMENSION(:), ALLOCATABLE :: iNOfElements
-    INTEGER, DIMENSION(:), ALLOCATABLE :: iNOfPhses
-    INTEGER, DIMENSION(3) :: iNOfGridPoints
-    CHARACTER(LEN=SHORTWORD), DIMENSION(:), ALLOCATABLE :: sNamesOfElements
+	DOUBLEPRECISION, DIMENSION(:), ALLOCATABLE :: rFiniteVolumeCenterCoordinates
     CHARACTER(LEN=SHORTWORD), DIMENSION(:), ALLOCATABLE :: sNamesOfPhases
+	CHARACTER(LEN=SHORTWORD), DIMENSION(:), ALLOCATABLE :: sNamesOfElements
   ENDTYPE tyUnprocessedData
   !-------------------------------------------------------------------------------------------------------------------------------------
   TYPE CellData
@@ -39,22 +39,22 @@
   ENDTYPE tyTimestepData
   !-------------------------------------------------------------------------------------------------------------------------------------
   TYPE tyProcessedData
-    INTEGER :: iNOfDimensions
+    INTEGER :: iNOfPhases
+	INTEGER :: iNOfElements
+    INTEGER :: iNOfTimeSteps
+	INTEGER :: iNOfDimensions
     DOUBLEPRECISION, DIMENSION(3) :: rDomainSize
     INTEGER, DIMENSION(3) :: iNumberOfGridPoints
-    INTEGER :: iNOfElements
-    INTEGER :: iNOfPhases
-    INTEGER :: iNOfTimeSteps
     CHARACTER(LEN=SHORTWORD), DIMENSION(:), ALLOCATABLE :: sNamesOfPhases
     CHARACTER(LEN=SHORTWORD), DIMENSION(:), ALLOCATABLE :: sNamesOfElements
-    TYPE(tyTimestepData), POINTER, DIMENSION(:) :: tyTimestepsData
+    TYPE(tyTimestepData)    , POINTER, DIMENSION(:)     :: tyTimestepsData
   END TYPE tyProcessedData
   !-------------------------------------------------------------------------------------------------------------------------------------
   TYPE POSTPROCESSORROOT
-    TYPE(tyProcessedData), POINTER :: tyProcessed
-    TYPE(tyUnprocessedData), POINTER :: tyRaw
     CHARACTER(LEN=LONGWORD) :: sInPath
     CHARACTER(LEN=LONGWORD) :: sOutPath
+	TYPE(tyUnprocessedData), POINTER :: tyRaw
+	TYPE(tyProcessedData)  , POINTER :: tyProcessed
   ENDTYPE POSTPROCESSORROOT
   !-------------------------------------------------------------------------------------------------------------------------------------
   !main_variables_declaration
