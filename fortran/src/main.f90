@@ -1,36 +1,36 @@
-  Program refactored_postprocessor
+  PROGRAM YAPFIPost
 
-  use postprocessor_datastructure
-  use get_input
-  use do_process
-  use set_vtk
+  USE mdsPostProcessor
+  USE mGetInput
+  USE mDoProcess
+  USE mSetVtk
 
-  implicit none
+  IMPLICIT NONE
 
-  allocate(root)
-  allocate(root%unprocessed)
-  allocate(root%processed)
+  ALLOCATE(tyParrent)
+  ALLOCATE(tyParrent%tyRaw)
+  ALLOCATE(tyParrent%tyProcessed)
 
-  !write(*,*) 'inpout directory path:'
-  !read(*,*) root%input_path
-  !write(*,*) 'outout directory path:'
-  !read(*,*) root%output_path
+  WRITE(*,*) "Inpout directory path (Put '\' at the end):"
+  READ(*,*) tyParrent%sInPath
+  WRITE(*,*) "Outout directory path  (Put '\' at the end):"
+  READ(*,*) tyParrent%sOutPath
 
-  root%input_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test3D\'         !temporary
-  root%output_path ='C:\Users\salmasi\Documents\Mycodes\yapfiPP\test3D\vtk\'    !temporary
-  write(*,*) '** Reading data from files'
+  !tyParrent%sInPath ='C:\USErs\salmasi\DOcuments\Mycodes\yapfiPP\test1D\'         !temporary
+  !tyParrent%sOutPath ='C:\USErs\salmasi\DOcuments\Mycodes\yapfiPP\test1D\vtk\'    !temporary
+  WRITE(*,*) '** Reading the data'
 
-  function_value_int = get_unprocessed_data(root)
+  iFunctionReturnValue = fGetRawData(tyParrent)
 
-  write(*,*) '** Processing data'
-  function_value_int = do_process_data(root)
+  WRITE(*,*) '** Processing the data'
+  iFunctionReturnValue = fDoProcessData(tyParrent)
 
-  
-  write(*,*) '** writing to file'
-  function_value_int = set_AllInOne_vtk(root)
-  
-  write(*,*) 'end process, press return!'
-  read(*,*)
-  deallocate(root)
 
-  endprogram refactored_postprocessor
+  WRITE(*,*) '** writing to output files'
+  iFunctionReturnValue = fSetVtkFile(tyParrent)
+
+  WRITE(*,*) 'End of process, press return!'
+  READ(*,*)
+  DEALLOCATE(tyParrent)
+
+  ENDPROGRAM YAPFIPost
