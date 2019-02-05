@@ -1,6 +1,6 @@
   PROGRAM YAPFIPost
 
-  USE mdsPostProcessor, 
+  USE mdsPostProcessor
   USE mGetInput
   USE mDoProcess
   USE mSetVtk
